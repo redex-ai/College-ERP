@@ -96,6 +96,7 @@ class Student(models.Model):
     name = models.CharField(max_length=200)
     sex = models.CharField(max_length=50, choices=sex_choice, default='Male')
     DOB = models.DateField(default='1998-01-01')
+    email = models.EmailField(max_length=254, unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
