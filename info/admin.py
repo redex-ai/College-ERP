@@ -81,8 +81,8 @@ class StudentCourseAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('USN', 'name', 'class_id')
-    search_fields = ('USN', 'name', 'class_id__id', 'class_id__dept__name')
+    list_display = ('USN', 'name', 'class_id', 'email')  # Added 'email' field here
+    search_fields = ('USN', 'name', 'class_id__id', 'class_id__dept__name', 'email')  # Added 'email' field here
     ordering = ['class_id__dept__name', 'class_id__id', 'USN']
 
 
