@@ -136,3 +136,38 @@ class TimetableView(APIView):
                 return Response({'message': 'User not authenticated'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class AverageMarksView(APIView):
+    """
+    This view is used to calculate and return the average marks percentage for a subject.
+    """
+
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request):
+        try:
+            token = Token.objects.filter(user=request.user).first()
+            if(token):  # checking for authentication using token authentication.
+                user = User.objects.get(auth_token=token)
+                teacher = Teacher.objects.get(user=user)
+
+                # Check if the teacher is assigned to the subject
+                assigned_subjects = Assign.objects.filter(teacher=teacher)
+                subject_id = request.GET.get('subject_id')
+                if assigned_subjects.filter(course=subject_id).exists():
+                    # Calculate average marks for the subject
+                    student_courses = StudentCourse.objects.filter(course=subject_id)
+                    total_marks = 0
+                    count = 0
+                    for student_course in student_courses:
+                        total_marks += student_course.marks
+                        count += 1
+                    average_marks = total_marks / count
+                    return Response({'average_marks': average_marks}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'message': 'Teacher is not assigned to the subject'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'message': 'User not authenticated'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
