@@ -25,3 +25,13 @@ class TimeTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignTime
         fields = '__all__'
+
+
+class AverageMarksSerializer(serializers.Serializer):
+    average_percentage = serializers.FloatField()
+    message = serializers.CharField()
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['message'] = 'Above average' if representation['average_percentage'] >= 50 else 'Below average'
+        return representation

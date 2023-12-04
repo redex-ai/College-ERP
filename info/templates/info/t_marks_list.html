@@ -13,6 +13,7 @@
                         <th>Name</th>
                         <th>Status</th>
                         <th></th>
+                        <th>Average Marks</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -24,16 +25,15 @@
                             <td>
                                 <a class="btn btn-primary" href="{% url 't_marks_entry' m.id %}" role="button">Enter Marks</a>
                             </td>
-
                         {% else %}
                             <td class="p-3 mb-2 bg-success text-white">Marked</td>
                             <td><a class="btn btn-warning" href="{% url 'edit_marks' m.id %}" role="button">Edit Marks</a> </td>
                         {% endif %}
+                        <td><a class="btn btn-info" href="{% url 'average_marks' m.subject_id %}" role="button">Average Marks</a></td>
                     </tr>
                     {% empty %}
                             <p>student has no courses</p>
                     {% endfor %}
-
                   </tbody>
                 </table>
               </div>
